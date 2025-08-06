@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
+    "declaration": true,
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "baseUrl": "./src",
+    "paths": {
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "include": ["src"]
+}
