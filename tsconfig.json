@@ -11,9 +11,9 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "@hooks/*": ["hooks/*"],
-      "@utils/*": ["utils/*"]
-    }
+      "@/*": ["./*"],
+    },
+    "types": ["vitest/globals"],
   },
   "include": ["src"]
 }
