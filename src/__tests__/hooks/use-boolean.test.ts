@@ -1,7 +1,10 @@
 import { useBoolean } from '@/hooks/use-boolean'
 import { act, renderHook } from '@testing-library/react'
+import { assertHook } from '../__tests-utils__/assertions'
 
 describe('useBoolean', () => {
+  assertHook(useBoolean)
+
   it('should initialize with default value', () => {
     const { result } = renderHook(() => useBoolean())
     expect(result.current.value).toBe(false)

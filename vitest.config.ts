@@ -6,7 +6,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
-    restoreMocks: true,
   },
   resolve: {
     alias: {
