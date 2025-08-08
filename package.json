@@ -23,8 +23,12 @@
   ],
   "scripts": {
     "test": "vitest",
+    "lint:fix": "eslint --fix",
     "test:debug": "vitest --test-timeout=0 --no-file-parallelism",
-    "build": "tsup"
+    "test:husky": "vitest run --silent --bail=1",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && tsup",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -56,6 +60,7 @@
     "@types/react-dom": "^19.1.7",
     "eslint": "^9.32.0",
     "happy-dom": "^18.0.1",
+    "husky": "^9.1.7",
     "neostandard": "^0.12.2",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",

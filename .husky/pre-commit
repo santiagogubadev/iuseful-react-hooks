@@ -1,0 +1,8 @@
+echo "🔧 linting..."
+npm run lint:fix
+
+echo "📦 build..."
+npm run build
+
+echo "🧪 fast tests..."
+npm run test:husky
