@@ -23,12 +23,12 @@
   ],
   "scripts": {
     "test": "vitest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "test:debug": "vitest --test-timeout=0 --no-file-parallelism",
     "test:husky": "vitest run --silent --bail=1",
-    "typecheck": "tsc --noEmit",
+    "lint:husky": "eslint . --max-warnings=0 -f stylish",
+    "lint:fix": "eslint . --fix",
     "build": "npm run typecheck && tsup",
+    "typecheck": "tsc --noEmit",
     "prepare": "husky"
   },
   "repository": {
