@@ -1,6 +1,6 @@
 import { assertHook } from '@/__tests__/__tests-utils__/assertions'
 import { UseSingletonBroadcastChannelParams } from '@/hooks/use-singleton-broadcast-channel'
-import { BroadcastChannelMock } from '../__mocks__/broadcast-channel'
+import { BroadcastChannelMock } from '@/__tests__/__mocks__/broadcast-channel'
 import { useBroadcastChannelSender } from '@/hooks'
 import { renderHook } from '@testing-library/react'
 

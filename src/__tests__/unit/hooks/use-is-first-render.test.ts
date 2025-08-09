@@ -1,5 +1,5 @@
 import { useIsFirstRender } from '@/hooks'
-import { assertHook } from '../__tests-utils__/assertions'
+import { assertHook } from '@/__tests__/__tests-utils__/assertions'
 import { renderHook } from '@testing-library/react'
 
 describe('useIsFirstRender', () => {

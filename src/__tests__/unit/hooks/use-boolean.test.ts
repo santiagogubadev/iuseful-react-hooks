@@ -1,6 +1,6 @@
 import { useBoolean } from '@/hooks/use-boolean'
 import { act, renderHook } from '@testing-library/react'
-import { assertHook } from '../__tests-utils__/assertions'
+import { assertHook } from '@/__tests__/__tests-utils__/assertions'
 
 describe('useBoolean', () => {
   assertHook(useBoolean)
