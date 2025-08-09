@@ -19,16 +19,19 @@ export interface UseBroadcastChannelSenderReturn<T> {
 
 /**
  * A custom hook that provides a function to send messages through a BroadcastChannel.
- * @param params - Parameters for the BroadcastChannel sender hook.
- * @param params.channelName - The name of the BroadcastChannel to send messages through.
  * @returns An object containing the send function and the BroadcastChannel instance.
  */
-export function useBroadcastChannelSender<T> ({ channelName }: UseBroadcastChannelSenderParams): UseBroadcastChannelSenderReturn<T> {
+export function useBroadcastChannelSender<T>({
+  channelName,
+}: UseBroadcastChannelSenderParams): UseBroadcastChannelSenderReturn<T> {
   const { channel } = useSingletonBroadcastChannel({ name: channelName })
 
-  const send = useCallback((message: T) => {
-    channel.postMessage(message)
-  }, [channel])
+  const send = useCallback(
+    (message: T) => {
+      channel.postMessage(message)
+    },
+    [channel],
+  )
 
-  return { send, }
+  return { send }
 }

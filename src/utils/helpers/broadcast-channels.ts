@@ -16,7 +16,7 @@ const cache = new Map<string, Entry>()
  * @param name - The name of the BroadcastChannel to acquire.
  * @returns The BroadcastChannel instance if it exists, or creates a new one.
  */
-export function acquireChannel (name: string): BroadcastChannel {
+export function acquireChannel(name: string): BroadcastChannel {
   const current = cache.get(name)
   if (current) {
     current.count += 1
@@ -32,7 +32,7 @@ export function acquireChannel (name: string): BroadcastChannel {
  * @param name - The name of the channel to release.
  * @param channel - The channel to release.
  */
-export function releaseChannel (name: string, channel: BroadcastChannel) {
+export function releaseChannel(name: string, channel: BroadcastChannel) {
   if (!channel) return
   const entry = cache.get(name)
   if (!entry) return

@@ -10,7 +10,7 @@ vi.mock('@/hooks/use-singleton-broadcast-channel', () => ({
   useSingletonBroadcastChannel: vi.fn(({ name }: UseSingletonBroadcastChannelParams) => {
     lastChannel = new BroadcastChannelMock(name)
     return { channel: lastChannel }
-  })
+  }),
 }))
 
 describe('useBroadcastChannelListeners', () => {
@@ -21,7 +21,13 @@ describe('useBroadcastChannelListeners', () => {
   })
 
   it('should add listeners to the BroadcastChannel', () => {
-    renderHook(() => useBroadcastChannelListener({ channelName: 'test-channel', onMessage: vi.fn(), onError: vi.fn() }))
+    renderHook(() =>
+      useBroadcastChannelListener({
+        channelName: 'test-channel',
+        onMessage: vi.fn(),
+        onError: vi.fn(),
+      }),
+    )
 
     expect(lastChannel!.addEventListener).toHaveBeenCalledWith('message', expect.any(Function))
     expect(lastChannel!.addEventListener).toHaveBeenCalledWith('messageerror', expect.any(Function))
@@ -41,7 +47,9 @@ describe('useBroadcastChannelListeners', () => {
 
   it('should call onError when a message error occurs', () => {
     const onError = vi.fn()
-    renderHook(() => useBroadcastChannelListener({ channelName: 'test-channel', onMessage: vi.fn(), onError }))
+    renderHook(() =>
+      useBroadcastChannelListener({ channelName: 'test-channel', onMessage: vi.fn(), onError }),
+    )
 
     const errorEvent = new Event('messageerror')
     lastChannel!.addEventListener.mock.calls[1][1](errorEvent)

@@ -10,7 +10,7 @@ vi.mock('@/hooks/use-singleton-broadcast-channel', () => ({
   useSingletonBroadcastChannel: vi.fn(({ name }: UseSingletonBroadcastChannelParams) => {
     lastChannel = new BroadcastChannelMock(name)
     return { channel: lastChannel }
-  })
+  }),
 }))
 
 describe('useBroadcastChannelSender', () => {

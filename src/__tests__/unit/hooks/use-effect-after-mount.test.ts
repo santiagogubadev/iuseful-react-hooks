@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react'
 import { Mock } from 'vitest'
 
 vi.mock('@/hooks/use-is-first-render', () => ({
-  useIsFirstRender: vi.fn()
+  useIsFirstRender: vi.fn(),
 }))
 
 describe('useEffectAfterMount', () => {
@@ -15,7 +15,7 @@ describe('useEffectAfterMount', () => {
   })
 
   it('should not call effect on first render', () => {
-    (useIsFirstRender as Mock).mockReturnValue(true)
+    ;(useIsFirstRender as Mock).mockReturnValue(true)
     const effectMock = vi.fn()
     renderHook(() => useEffectAfterMount(effectMock, []))
 
@@ -23,7 +23,7 @@ describe('useEffectAfterMount', () => {
   })
 
   it('should call effect after first render', () => {
-    (useIsFirstRender as Mock).mockReturnValue(true)
+    ;(useIsFirstRender as Mock).mockReturnValue(true)
     const effectMock = vi.fn()
     const { rerender } = renderHook(() => useEffectAfterMount(effectMock))
 

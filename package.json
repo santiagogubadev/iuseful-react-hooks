@@ -23,7 +23,8 @@
   ],
   "scripts": {
     "test": "vitest",
-    "lint:fix": "eslint --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test:debug": "vitest --test-timeout=0 --no-file-parallelism",
     "test:husky": "vitest run --silent --bail=1",
     "typecheck": "tsc --noEmit",
@@ -59,9 +60,12 @@
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "happy-dom": "^18.0.1",
     "husky": "^9.1.7",
     "neostandard": "^0.12.2",
+    "prettier": "^3.6.2",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

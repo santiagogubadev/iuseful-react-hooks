@@ -1,4 +1,4 @@
-import { useCallback, useEffect, } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSingletonBroadcastChannel } from '@/hooks/use-singleton-broadcast-channel'
 
 export interface UseBroadcastChannelListenerParams<T> {
@@ -25,26 +25,34 @@ export interface UseBroadcastChannelListenerParams<T> {
  * @param params.onMessage - The function to handle incoming messages.
  * @param params.onError - The function to handle errors when receiving messages.
  */
-export function useBroadcastChannelListener<T> (
-  { channelName, onMessage, onError = null }: UseBroadcastChannelListenerParams<T>
-) {
+export function useBroadcastChannelListener<T>({
+  channelName,
+  onMessage,
+  onError = null,
+}: UseBroadcastChannelListenerParams<T>) {
   const { channel } = useSingletonBroadcastChannel({ name: channelName })
 
   const memoizedOnMessage = useCallback(
     (ev: MessageEvent<T>) => {
       onMessage(ev)
-    }, [onMessage])
+    },
+    [onMessage],
+  )
 
   const memoizedOnError = useCallback(
     (ev: Event) => {
       onError?.(ev)
-    }, [onError])
+    },
+    [onError],
+  )
 
   useEffect(() => {
     if (!channel) return
 
     channel.addEventListener('message', memoizedOnMessage)
-    if (memoizedOnError) { channel.addEventListener('messageerror', memoizedOnError) }
+    if (memoizedOnError) {
+      channel.addEventListener('messageerror', memoizedOnError)
+    }
 
     return () => {
       channel.removeEventListener('message', memoizedOnMessage)

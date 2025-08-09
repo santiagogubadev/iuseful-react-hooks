@@ -6,7 +6,7 @@ import { acquireChannel, releaseChannel } from '@/utils/helpers/broadcast-channe
 
 vi.mock('@/utils/helpers/broadcast-channels.ts', () => ({
   acquireChannel: vi.fn((name: string) => new BroadcastChannelMock(name)),
-  releaseChannel: vi.fn()
+  releaseChannel: vi.fn(),
 }))
 
 vi.stubGlobal('BroadcastChannel', BroadcastChannelMock)
@@ -36,7 +36,7 @@ describe('useSingletonBroadcastChannel', () => {
 
   it('should change channel when name changes', () => {
     const { result, rerender } = renderHook(({ name }) => useSingletonBroadcastChannel({ name }), {
-      initialProps: { name: 'test-channel' }
+      initialProps: { name: 'test-channel' },
     })
 
     const initialChannel = result.current.channel

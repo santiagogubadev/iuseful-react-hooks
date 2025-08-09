@@ -7,7 +7,7 @@ import { useIsFirstRender } from './use-is-first-render'
  * @param effect - The effect callback to run after the component has mounted
  * @param deps - The dependency array for the effect
  */
-export function useEffectAfterMount (effect: EffectCallback, deps?: DependencyList) {
+export function useEffectAfterMount(effect: EffectCallback, deps?: DependencyList) {
   const isFirstRender = useIsFirstRender()
 
   useEffect(() => {

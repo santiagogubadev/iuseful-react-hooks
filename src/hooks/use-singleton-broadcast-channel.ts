@@ -15,7 +15,9 @@ export interface UseSingletonBroadcastChannelReturn {
   channel: BroadcastChannel
 }
 
-export function useSingletonBroadcastChannel ({ name }: UseSingletonBroadcastChannelParams): UseSingletonBroadcastChannelReturn {
+export function useSingletonBroadcastChannel({
+  name,
+}: UseSingletonBroadcastChannelParams): UseSingletonBroadcastChannelReturn {
   const nameRef = useRef(name)
 
   useEffect(() => {

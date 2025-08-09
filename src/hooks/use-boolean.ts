@@ -23,18 +23,16 @@ interface UseBooleanReturn {
  * @param [isActive=true] - Initial value for the boolean state. Defaults to false.
  * @returns An object containing the current boolean value, a function to toggle the value, and a function to set the value.
  */
-export function useBoolean (initialValue: boolean = false): UseBooleanReturn {
+export function useBoolean(initialValue: boolean = false): UseBooleanReturn {
   const [value, setValue] = useState<boolean>(initialValue)
 
   const toggle = useCallback(() => {
     setValue((prev) => !prev)
   }, [])
 
-  const set = useCallback(
-    (param: boolean | ((prev: boolean) => boolean)) => {
-      setValue(param)
-    }
-    , [])
+  const set = useCallback((param: boolean | ((prev: boolean) => boolean)) => {
+    setValue(param)
+  }, [])
 
   return {
     set,
