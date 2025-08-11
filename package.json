@@ -1,7 +1,7 @@
 {
-  "name": "@santydev/react-hooks",
+  "name": "useful-react-hooks",
   "version": "0.0.0",
-  "description": "Utilitaries hooks for React",
+  "description": "'Use'-ful React hooks",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -41,7 +41,8 @@
     "utilities",
     "utils",
     "santydev",
-    "typescript"
+    "typescript",
+    "useful"
   ],
   "author": "Santiago Gutiérrez Barreneche <santydev0311@gmail.com>",
   "license": "MIT",
