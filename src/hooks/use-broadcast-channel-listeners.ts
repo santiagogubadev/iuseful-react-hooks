@@ -20,10 +20,6 @@ export interface UseBroadcastChannelListenerParams<T> {
 
 /**
  * A custom hook that listens for messages on a BroadcastChannel.
- * @param params - Parameters for the BroadcastChannel listener hook.
- * @param params.channelName - The name of the BroadcastChannel to listen to.
- * @param params.onMessage - The function to handle incoming messages.
- * @param params.onError - The function to handle errors when receiving messages.
  */
 export function useBroadcastChannelListener<T>({
   channelName,
