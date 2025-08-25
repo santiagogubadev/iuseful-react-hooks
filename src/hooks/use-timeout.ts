@@ -1,13 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-interface UseTimeoutOptionsParam {
-  /**
-   * If true, the timeout will be cleared when the component unmounts.
-   * @default true
-   */
-  clearOnUnmount?: boolean
-}
-
 interface UseTimeoutReturn {
   /**
    * Indicates if the timeout was cleared.
@@ -17,6 +9,10 @@ interface UseTimeoutReturn {
    * Clears the timeout.
    */
   clear: () => void
+  /**
+   * Resets the timeout.
+   */
+  reset: () => void
 }
 
 /**
@@ -29,7 +25,6 @@ interface UseTimeoutReturn {
 export function useTimeout(
   onTimeout: () => void | Promise<void>,
   delayInMs: number,
-  { clearOnUnmount = true }: UseTimeoutOptionsParam = {},
 ): UseTimeoutReturn {
   const [isCleared, setIsCleared] = useState<boolean>(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -45,18 +40,22 @@ export function useTimeout(
     setIsCleared(true)
   }, [])
 
+  const set = useCallback(() => {
+    timeoutRef.current = setTimeout(cbRef.current, delayInMs)
+    setIsCleared(false)
+  }, [])
+
+  const reset = useCallback(() => {
+    clear()
+    set()
+  }, [clear, set])
+
   useEffect(() => {
     setIsCleared(false)
-    timeoutRef.current = setTimeout(cbRef.current, delayInMs)
+    set()
+
+    return clear
   }, [delayInMs])
 
-  useEffect(
-    () => () => {
-      if (!clearOnUnmount) return
-      clear()
-    },
-    [clearOnUnmount],
-  )
-
-  return { isCleared, clear }
+  return { isCleared, clear, reset }
 }
