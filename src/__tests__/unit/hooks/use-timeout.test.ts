@@ -14,7 +14,7 @@ describe('useTimeout', () => {
     const { result, unmount } = renderHook(() => useTimeout(vi.fn(), 1000))
     const clearSpy = vi.spyOn(globalThis, 'clearTimeout')
 
-    expect(result.current[0]).toBe(false)
+    expect(result.current.isCleared).toBe(false)
     unmount()
     expect(clearSpy).toHaveBeenCalled()
     expect(clearSpy).toHaveBeenCalledTimes(1)
@@ -23,11 +23,11 @@ describe('useTimeout', () => {
   it('should sets isCleared to true when clear() is called while mounted', () => {
     const { result } = renderHook(() => useTimeout(vi.fn(), 5000, { clearOnUnmount: false }))
 
-    expect(result.current[0]).toBe(false)
+    expect(result.current.isCleared).toBe(false)
     act(() => {
-      result.current[1]()
+      result.current.clear()
     })
-    expect(result.current[0]).toBe(true)
+    expect(result.current.isCleared).toBe(true)
   })
 
   it('should call onTimeout when the timeout is reached', async () => {

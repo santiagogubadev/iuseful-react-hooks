@@ -8,7 +8,16 @@ interface UseTimeoutOptionsParam {
   clearOnUnmount?: boolean
 }
 
-type UseTimeoutReturn = [boolean, () => void]
+interface UseTimeoutReturn {
+  /**
+   * Indicates if the timeout was cleared.
+   */
+  isCleared: boolean
+  /**
+   * Clears the timeout.
+   */
+  clear: () => void
+}
 
 /**
  * A custom hook that sets a timeout and provides a way to clear it.
@@ -24,7 +33,11 @@ export function useTimeout(
 ): UseTimeoutReturn {
   const [isCleared, setIsCleared] = useState<boolean>(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const memoizedCb = useCallback(onTimeout, [onTimeout])
+  const cbRef = useRef(onTimeout)
+
+  useEffect(() => {
+    cbRef.current = onTimeout
+  }, [onTimeout])
 
   const clear = useCallback(() => {
     timeoutRef.current && clearTimeout(timeoutRef.current)
@@ -34,7 +47,7 @@ export function useTimeout(
 
   useEffect(() => {
     setIsCleared(false)
-    timeoutRef.current = setTimeout(memoizedCb, delayInMs)
+    timeoutRef.current = setTimeout(cbRef.current, delayInMs)
   }, [delayInMs])
 
   useEffect(
@@ -45,5 +58,5 @@ export function useTimeout(
     [clearOnUnmount],
   )
 
-  return [isCleared, clear]
+  return { isCleared, clear }
 }
