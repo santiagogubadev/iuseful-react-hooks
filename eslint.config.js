@@ -1,6 +1,7 @@
 import neostandard from 'neostandard'
 import pluginPrettier from 'eslint-plugin-prettier'
 import configPrettier from 'eslint-config-prettier'
+import pluginReactHooks from 'eslint-plugin-react-hooks'
 
 export default [
   ...neostandard({
@@ -40,6 +41,14 @@ export default [
           endOfLine: 'auto',
         },
       ],
+    },
+  },
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: { 'react-hooks': pluginReactHooks, prettier: pluginPrettier },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': ['warn'],
     },
   },
 ]

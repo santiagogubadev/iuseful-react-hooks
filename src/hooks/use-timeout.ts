@@ -1,3 +1,4 @@
+import { isPromise, noop } from '@/utils/helpers/functions'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface UseTimeoutReturn {
@@ -27,7 +28,7 @@ export function useTimeout(
   delayInMs: number,
 ): UseTimeoutReturn {
   const [isCleared, setIsCleared] = useState<boolean>(false)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cbRef = useRef(onTimeout)
 
   useEffect(() => {
@@ -40,22 +41,29 @@ export function useTimeout(
     setIsCleared(true)
   }, [])
 
-  const set = useCallback(() => {
-    timeoutRef.current = setTimeout(cbRef.current, delayInMs)
+  const schedule = useCallback(() => {
+    if (timeoutRef.current != null) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      const result = cbRef.current()
+      if (isPromise(result)) result.catch(noop)
+    }, delayInMs)
+
     setIsCleared(false)
-  }, [])
+  }, [delayInMs])
 
   const reset = useCallback(() => {
     clear()
-    set()
-  }, [clear, set])
+    schedule()
+  }, [clear, schedule])
 
   useEffect(() => {
-    setIsCleared(false)
-    set()
-
+    schedule()
     return clear
-  }, [delayInMs])
+  }, [schedule, clear])
 
   return { isCleared, clear, reset }
 }
