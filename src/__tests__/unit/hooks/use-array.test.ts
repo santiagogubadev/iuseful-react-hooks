@@ -87,4 +87,17 @@ describe('useArray', () => {
     expect(result.current.array).toEqual([])
     expect(result.current.array.length).toBe(0)
   })
+
+  it('should sort with the provided compare fn', async () => {
+    const { result } = renderHook(() => useArray([3, 1, 2]))
+    await act(async () => result.current.sort((a, b) => a - b))
+    expect(result.current.array).toEqual([1, 2, 3])
+    expect(result.current.array.length).toBe(3)
+
+    const { result: newResult } = renderHook(() => useArray(['Santiago', 'Luis']))
+
+    await act(async () => newResult.current.sort((a, b) => a.localeCompare(b)))
+    expect(newResult.current.array).toEqual(['Luis', 'Santiago'])
+    expect(newResult.current.array.length).toBe(2)
+  })
 })

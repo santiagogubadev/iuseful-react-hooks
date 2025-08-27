@@ -62,6 +62,12 @@ interface UseArrayReturn<T> {
    * @returns void
    */
   shift: () => void
+  /**
+   * Sort the array.
+   * @param compareFn The function to determine the order of the elements.
+   * @returns void
+   */
+  sort: (compareFn?: (a: T, b: T) => number) => void
 }
 
 /**
@@ -112,5 +118,9 @@ export function useArray<T>(initialValue: T[]): UseArrayReturn<T> {
     setArray((prevArray) => prevArray.slice(1))
   }, [])
 
-  return { array, set, push, pop, remove, clear, update, filter, concat, merge, shift }
+  const sort: UseArrayReturn<T>['sort'] = useCallback((compareFn) => {
+    setArray((prevArray) => prevArray.toSorted(compareFn))
+  }, [])
+
+  return { array, set, push, pop, remove, clear, update, filter, concat, merge, shift, sort }
 }
