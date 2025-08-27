@@ -25,11 +25,11 @@
     "test": "vitest",
     "test:debug": "vitest --test-timeout=0 --no-file-parallelism",
     "test:husky": "vitest run --silent --bail=1",
-    "lint:husky": "eslint . -f stylish",
-    "lint:fix": "eslint . --fix",
+    "lint-staged:husky": "lint-staged",
+    "lint:fix": "eslint . --fix stylish",
     "build": "npm run typecheck && tsup",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "repository": {
     "type": "git",
@@ -66,6 +66,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "happy-dom": "^18.0.1",
     "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
     "neostandard": "^0.12.2",
     "prettier": "^3.6.2",
     "tsup": "^8.5.0",

@@ -1,5 +1,13 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# 🔧 load nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+nvm use default --silent
+
 echo "🔧 linting..."
-npm run lint:husky
+npm run lint-staged:husky
 
 echo "📦 build..."
 npm run build
