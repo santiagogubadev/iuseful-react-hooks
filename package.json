@@ -25,7 +25,7 @@
     "test": "vitest",
     "test:debug": "vitest --test-timeout=0 --no-file-parallelism",
     "test:husky": "vitest run --silent --bail=1",
-    "lint-staged:husky": "lint-staged",
+    "lint-staged:husky": "lint-staged --no-stash",
     "lint:fix": "eslint . --fix stylish",
     "build": "npm run typecheck && tsup",
     "typecheck": "tsc --noEmit",

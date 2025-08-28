@@ -50,16 +50,10 @@ export function useNearScreen<TElement extends HTMLElement | null>({
       [firstEntry]: IntersectionObserverEntry[],
       observer: IntersectionObserver,
     ) => {
-      if (firstEntry.isIntersecting) {
-        setIsNearScreen(true)
-        if (once) {
-          observer.disconnect()
-        }
-      } else {
-        if (!once) {
-          setIsNearScreen(false)
-        }
-      }
+      if (!firstEntry) return
+      const { isIntersecting } = firstEntry
+      if (!once || isIntersecting) setIsNearScreen(isIntersecting)
+      if (isIntersecting && once) observer.disconnect()
     }
 
     const observer = new IntersectionObserver(onChange, {
