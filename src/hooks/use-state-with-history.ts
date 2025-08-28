@@ -1,8 +1,5 @@
+import { DefaultValue, NewState } from '@/utils/types/react'
 import { useCallback, useRef, useState } from 'react'
-
-type InitialState<S> = S | (() => S)
-
-type NewState<S> = S | ((prev: S) => S)
 
 interface UseStateWithHistoryHandlersReturn<S> {
   /**
@@ -52,10 +49,10 @@ interface UseStateWithHistoryConfigParam {
 }
 
 export function useStateWithHistory<S = undefined>(
-  initialState?: InitialState<S>,
+  initialState?: DefaultValue<S>,
   { historyLimit = 10 }: UseStateWithHistoryConfigParam = {},
 ): UseStateWithHistoryReturn<S> {
-  const [value, setValue] = useState<S>(initialState as InitialState<S>)
+  const [value, setValue] = useState<S>(initialState as DefaultValue<S>)
   const historyRef = useRef<S[]>([value])
   const pointerRef = useRef<number>(0)
 
