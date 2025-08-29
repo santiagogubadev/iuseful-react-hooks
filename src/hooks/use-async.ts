@@ -1,6 +1,6 @@
 import { DependencyList, useCallback, useEffect, useState } from 'react'
 
-interface UseAsyncReturn<TValue, CError> {
+export interface UseAsyncReturn<TValue, CError> {
   /**
    * The result of the async operation.
    */
@@ -39,9 +39,7 @@ export function useAsync<TValue, CError = Error>(
       .finally(() => setLoading(false))
   }, dependencies)
 
-  useEffect(() => {
-    execute()
-  }, [execute])
+  useEffect(execute, [execute])
 
   return { value, error, loading }
 }
