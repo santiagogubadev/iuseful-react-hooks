@@ -16,7 +16,7 @@ describe('useSize', () => {
     const { result: refResult } = renderHook(() => useRef<HTMLDivElement>(null))
     const { result } = renderHook(() => useSize(refResult.current))
 
-    expect(result.current).toEqual({})
+    expect(result.current.size).toEqual({})
   })
 
   it('should create a ResizeObserver when ref has a current element', async () => {
@@ -38,7 +38,7 @@ describe('useSize', () => {
 
     const { result } = renderHook(() => useSize(refResult.current))
 
-    expect(result.current).toEqual({
+    expect(result.current.size).toEqual({
       width: 200,
       height: 100,
       top: 0,
