@@ -9,7 +9,9 @@ type EventKeysForTarget<T> = T extends Window
       ? keyof HTMLElementEventMap
       : T extends MediaQueryList
         ? keyof MediaQueryListEventMap
-        : string
+        : T extends CookieStore
+          ? keyof CookieStoreEventMap
+          : string
 
 // Helper type to get the correct event type based on target and key
 type EventForTargetAndKey<T, K> = T extends Window
@@ -28,7 +30,11 @@ type EventForTargetAndKey<T, K> = T extends Window
         ? K extends keyof MediaQueryListEventMap
           ? MediaQueryListEventMap[K]
           : Event
-        : Event
+        : T extends CookieStore
+          ? K extends keyof CookieStoreEventMap
+            ? CookieStoreEventMap[K]
+            : Event
+          : Event
 
 // Helper type for the listener based on target and event key
 type ListenerForTargetAndKey<T, K> =
