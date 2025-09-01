@@ -1,6 +1,6 @@
 {
   "name": "iuseful-react-hooks",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "'Use'-ful React hooks",
   "type": "module",
   "main": "dist/index.cjs",
