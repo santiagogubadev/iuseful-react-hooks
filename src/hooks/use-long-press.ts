@@ -78,7 +78,7 @@ export function useLongPress<TElement extends HTMLElement = HTMLElement>({
   onLongPress,
   delay = 300,
 }: UseLongPressParams<TElement>) {
-  const fromRef = useRef<TElement>(undefined)
+  const fromRef = useRef<TElement>(null)
   const { reset, clear } = useTimeout(onLongPress, delay)
   useEffect(clear, [])
 
