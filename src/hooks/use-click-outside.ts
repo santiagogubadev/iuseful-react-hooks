@@ -35,7 +35,7 @@ export function useClickOutSide<TElement extends Element = Element>({
   onClickOutside,
   externalRef,
 }: UseClickOutSideParams<TElement>) {
-  const fromRef = useRef<TElement | null>(null)
+  const fromRef = useRef<TElement>(null)
 
   useEventListener(
     'click',
