@@ -3,11 +3,11 @@ name: Release and Publish
 on:
   pull_request:
     types: [closed]
-    branches: [main, master]
+    branches: [main]
 
 jobs:
   release:
-    if: github.event.pull_request.merged == true && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor'))
+    if: github.event.pull_request.merged == true && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor')) && !contains(github.event.pull_request.labels.*.name, 'skip-release')
     runs-on: ubuntu-latest
     
     permissions:
