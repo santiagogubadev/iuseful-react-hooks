@@ -3,7 +3,7 @@ name: Documentation Issue
 about: Report an issue with documentation or suggest improvements
 title: '[DOCS] '
 labels: ['documentation']
-assignees: ['Santyzz0311']
+assignees: ['santiagogubadev']
 
 ---
 

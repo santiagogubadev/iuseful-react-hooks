@@ -3,7 +3,7 @@ name: Feature Request
 about: Suggest an idea for a new hook or improvement
 title: '[FEATURE] '
 labels: ['enhancement']
-assignees: ['Santyzz0311']
+assignees: ['santiagogubadev']
 
 ---
 
