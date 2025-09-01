@@ -5,21 +5,21 @@ A collection of useful React hooks written in TypeScript that help you build bet
 ## 🚀 Installation
 
 ```bash
-npm install useful-react-hooks
+npm install iuseful-react-hooks
 ```
 
 ```bash
-yarn add useful-react-hooks
+yarn add iuseful-react-hooks
 ```
 
 ```bash
-pnpm add useful-react-hooks
+pnpm add iuseful-react-hooks
 ```
 
 ## 📖 Usage
 
 ```typescript
-import { useBoolean, useArray, useAsync } from 'useful-react-hooks'
+import { useBoolean, useArray, useAsync } from 'iuseful-react-hooks'
 
 function MyComponent() {
   const { value, toggle, set } = useBoolean(false)
@@ -104,5 +104,5 @@ MIT © [Santiago Gutiérrez Barreneche](https://github.com/Santyzz0311)
 ## 🔗 Links
 
 - [GitHub Repository](https://github.com/Santyzz0311/react-hooks)
-- [NPM Package](https://www.npmjs.com/package/useful-react-hooks)
+- [NPM Package](https://www.npmjs.com/package/iuseful-react-hooks)
 - [Issues & Bug Reports](https://github.com/Santyzz0311/react-hooks/issues)
