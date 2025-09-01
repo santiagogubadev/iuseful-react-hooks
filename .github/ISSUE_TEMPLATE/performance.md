@@ -3,7 +3,7 @@ name: Performance Issue
 about: Report a performance problem with a hook
 title: '[PERFORMANCE] '
 labels: ['performance', 'bug']
-assignees: ['Santyzz0311']
+assignees: ['santiagogubadev']
 
 ---
 

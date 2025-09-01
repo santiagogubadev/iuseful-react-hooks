@@ -99,10 +99,10 @@ We welcome contributions! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-MIT © [Santiago Gutiérrez Barreneche](https://github.com/Santyzz0311)
+MIT © [Santiago Gutiérrez Barreneche](https://github.com/santiagogubadev)
 
 ## 🔗 Links
 
-- [GitHub Repository](https://github.com/Santyzz0311/react-hooks)
+- [GitHub Repository](https://github.com/santiagogubadev/react-hooks)
 - [NPM Package](https://www.npmjs.com/package/iuseful-react-hooks)
-- [Issues & Bug Reports](https://github.com/Santyzz0311/react-hooks/issues)
+- [Issues & Bug Reports](https://github.com/santiagogubadev/react-hooks/issues)

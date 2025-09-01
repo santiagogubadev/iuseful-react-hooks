@@ -8,7 +8,7 @@ updates:
       time: "09:00"
     open-pull-requests-limit: 5
     assignees:
-      - "Santyzz0311"
+      - "santiagogubadev"
     commit-message:
       prefix: "chore"
       prefix-development: "chore"
@@ -22,7 +22,7 @@ updates:
     schedule:
       interval: "weekly"
     assignees:
-      - "Santyzz0311"
+      - "santiagogubadev"
     labels:
       - "skip-release"
       - "github-actions"
