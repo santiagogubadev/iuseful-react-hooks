@@ -116,5 +116,5 @@ jobs:
       - name: Notify success
         run: |
           echo "🎉 Successfully published v${{ steps.version.outputs.new_version }} to NPM!"
-          echo "📦 Package: https://www.npmjs.com/package/useful-react-hooks"
+          echo "📦 Package: https://www.npmjs.com/package/iuseful-react-hooks"
           echo "🏷️ Release: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.new_version }}"
