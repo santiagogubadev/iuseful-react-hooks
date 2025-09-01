@@ -3,7 +3,8 @@ name: Validate PR Labels
 on:
   pull_request:
     types: [opened, synchronize, labeled, unlabeled]
-
+    branches: [main]
+    
 jobs:
   validate-labels:
     runs-on: ubuntu-latest
