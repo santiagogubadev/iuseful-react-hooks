@@ -7,7 +7,13 @@ describe('useAsync', async () => {
 
   it('should return the correct initial state', async () => {
     const { result } = renderHook(() => useAsync(async () => {}))
-    expect(result.current).toEqual({ value: null, error: null, loading: true })
+    expect(result.current).toEqual({
+      value: null,
+      error: null,
+      loading: true,
+      refresh: expect.any(Function),
+      setValue: expect.any(Function),
+    })
   })
 
   it('should return the correct state after the async operation', async () => {
@@ -15,6 +21,12 @@ describe('useAsync', async () => {
     const { result } = renderHook(() => useAsync(cbMock))
     await act(async () => {})
     expect(cbMock).toHaveBeenCalledTimes(1)
-    expect(result.current).toEqual({ value: 42, error: null, loading: false })
+    expect(result.current).toEqual({
+      value: 42,
+      error: null,
+      loading: false,
+      refresh: expect.any(Function),
+      setValue: expect.any(Function),
+    })
   })
 })

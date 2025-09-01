@@ -13,6 +13,14 @@ export interface UseAsyncReturn<TValue, CError> {
    * Whether the async operation is currently loading.
    */
   loading: boolean
+  /**
+   * A function to refresh the async operation.
+   */
+  refresh: () => void
+  /**
+   * A function to manually set the value.
+   */
+  setValue: (value: TValue | null) => void
 }
 
 /**
@@ -29,7 +37,7 @@ export function useAsync<TValue, CError = Error>(
   const [error, setError] = useState<CError | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const execute = useCallback(() => {
+  const refresh = useCallback(() => {
     setLoading(true)
     setValue(null)
     setError(null)
@@ -39,7 +47,7 @@ export function useAsync<TValue, CError = Error>(
       .finally(() => setLoading(false))
   }, dependencies)
 
-  useEffect(execute, [execute])
+  useEffect(refresh, [refresh])
 
-  return { value, error, loading }
+  return { value, error, loading, refresh, setValue }
 }
