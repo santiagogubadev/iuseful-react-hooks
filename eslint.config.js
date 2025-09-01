@@ -1,0 +1,53 @@
+import neostandard from 'neostandard'
+import pluginPrettier from 'eslint-plugin-prettier'
+import configPrettier from 'eslint-config-prettier'
+import pluginReactHooks from 'eslint-plugin-react-hooks'
+
+export default [
+  ...neostandard({
+    ts: true,
+    ignores: ['dist/**', 'node_modules/**'],
+  }),
+  configPrettier,
+  {
+    plugins: { prettier: pluginPrettier },
+    rules: {
+      'object-curly-spacing': ['error', 'always'],
+      'key-spacing': ['error', { beforeColon: false, afterColon: true }],
+      '@stylistic/type-annotation-spacing': ['error'],
+      '@stylistic/arrow-spacing': ['error', { before: true, after: true }],
+      '@stylistic/type-generic-spacing': ['error'],
+      '@stylistic/max-len': [
+        'error',
+        {
+          code: 100,
+          ignoreComments: true,
+          ignoreTrailingComments: true,
+          ignoreUrls: true,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+        },
+      ],
+      'prettier/prettier': [
+        'error',
+        {
+          printWidth: 100,
+          singleQuote: true,
+          trailingComma: 'all',
+          semi: false,
+          arrowParens: 'always',
+          bracketSpacing: true,
+          endOfLine: 'auto',
+        },
+      ],
+    },
+  },
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: { 'react-hooks': pluginReactHooks, prettier: pluginPrettier },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': ['warn'],
+    },
+  },
+]

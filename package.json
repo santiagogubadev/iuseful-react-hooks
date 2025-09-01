@@ -1,0 +1,79 @@
+{
+  "name": "useful-react-hooks",
+  "version": "0.0.0",
+  "description": "'Use'-ful React hooks",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "test:debug": "vitest --test-timeout=0 --no-file-parallelism",
+    "test:husky": "vitest run --silent --bail=1",
+    "test:ci": "vitest run",
+    "lint-staged:husky": "lint-staged --no-stash",
+    "lint:fix": "eslint . --fix stylish",
+    "lint:ci": "eslint . --max-warnings 999999",
+    "build": "npm run typecheck && tsup",
+    "build:ci": "npm run typecheck && tsup",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky || true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Santyzz0311/useful-react-hooks.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "utilities",
+    "utils",
+    "santydev",
+    "typescript",
+    "useful"
+  ],
+  "author": "Santiago Gutiérrez Barreneche <santydev0311@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Santyzz0311/useful-react-hooks/issues"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "homepage": "https://github.com/Santyzz0311/useful-react-hooks#readme",
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "~5.2.2",
+    "@testing-library/dom": "~10.4.1",
+    "@testing-library/react": "~16.3.0",
+    "@types/react": "~19.1.9",
+    "@types/react-dom": "~19.1.7",
+    "eslint": "~9.32.0",
+    "eslint-config-prettier": "~10.1.8",
+    "eslint-plugin-prettier": "~5.5.4",
+    "eslint-plugin-react-hooks": "~5.2.0",
+    "happy-dom": "~18.0.1",
+    "husky": "~9.1.7",
+    "lint-staged": "~16.1.5",
+    "neostandard": "~0.12.2",
+    "prettier": "~3.6.2",
+    "tsup": "~8.5.0",
+    "typescript": "~5.9.2",
+    "vitest": "~3.2.4"
+  }
+}
