@@ -1,5 +1,5 @@
 {
-  "name": "useful-useful-react-hooks",
+  "name": "useful-react-hooks",
   "version": "0.0.0",
   "description": "'Use'-ful React hooks",
   "type": "module",
@@ -66,7 +66,7 @@
     "eslint": "~9.32.0",
     "eslint-config-prettier": "~10.1.8",
     "eslint-plugin-prettier": "~5.5.4",
-    "eslint-plugin-useful-react-hooks": "~5.2.0",
+    "eslint-plugin-react-hooks": "~5.2.0",
     "happy-dom": "~18.0.1",
     "husky": "~9.1.7",
     "lint-staged": "~16.1.5",

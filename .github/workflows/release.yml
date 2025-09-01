@@ -1,0 +1,116 @@
+name: Release and Publish
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main, master]
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor'))
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint:ci
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Build package
+        run: npm run build:ci
+
+      - name: Determine version bump
+        id: version_bump
+        run: |
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'minor') }}" == "true" ]]; then
+            echo "bump_type=minor" >> $GITHUB_OUTPUT
+          elif [[ "${{ contains(github.event.pull_request.labels.*.name, 'patch') }}" == "true" ]]; then
+            echo "bump_type=patch" >> $GITHUB_OUTPUT
+          else
+            echo "bump_type=patch" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Bump version
+        id: version
+        run: |
+          OLD_VERSION=$(node -p "require('./package.json').version")
+          npm version ${{ steps.version_bump.outputs.bump_type }} --no-git-tag-version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "old_version=$OLD_VERSION" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Commit version bump
+        run: |
+          git add package.json
+          git commit -m "chore: bump version to v${{ steps.version.outputs.new_version }}"
+          git push
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.new_version }}
+          release_name: Release v${{ steps.version.outputs.new_version }}
+          body: |
+            ## Changes
+            
+            **Version**: v${{ steps.version.outputs.new_version }}
+            **Previous Version**: v${{ steps.version.outputs.old_version }}
+            **Type**: ${{ steps.version_bump.outputs.bump_type }}
+            
+            ### What's Changed
+            - Merged PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}
+            
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.version.outputs.old_version }}...v${{ steps.version.outputs.new_version }}
+          draft: false
+          prerelease: false
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist
+          asset_name: build-artifacts
+          asset_content_type: application/zip
+
+      - name: Notify success
+        run: |
+          echo "🎉 Successfully published v${{ steps.version.outputs.new_version }} to NPM!"
+          echo "📦 Package: https://www.npmjs.com/package/useful-react-hooks"
+          echo "🏷️ Release: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.new_version }}"
