@@ -31,8 +31,47 @@ export function useLongPress<TElement extends HTMLElement = HTMLElement>(
 ): UseLongPressReturn<TElement, false>
 
 /**
- * A hook that triggers a callback when a long press is detected.
- * @param param0 - The parameters for the long press event.
+ * A hook that triggers a callback when a long press gesture is detected.
+ *
+ * This hook detects when a user presses and holds an element for a specified duration.
+ * Useful for implementing context menus, alternative actions, or touch-friendly interfaces.
+ * You can either provide your own ref or use the ref returned by the hook.
+ *
+ * @param params - Configuration object for the long press detection
+ * @param params.onLongPress - Callback function called when a long press is detected
+ * @param params.externalRef - Optional ref to an existing element. If not provided, the hook returns a ref to use
+ * @param params.delay - The delay in milliseconds before triggering the long press. Defaults to 300ms
+ * @returns When externalRef is provided, returns void. Otherwise returns an object with a ref to attach to your element
+ *
+ * @example
+ * ```tsx
+ * // Using the ref returned by the hook
+ * function LongPressButton() {
+ *   const { fromRef } = useLongPress({
+ *     onLongPress: () => console.log('Long press detected!'),
+ *     delay: 500
+ *   })
+ *
+ *   return (
+ *     <button ref={fromRef}>
+ *       Hold me for 500ms
+ *     </button>
+ *   )
+ * }
+ *
+ * // Using an external ref
+ * function CustomElement() {
+ *   const elementRef = useRef(null)
+ *
+ *   useLongPress({
+ *     externalRef: elementRef,
+ *     onLongPress: () => alert('Context menu triggered!'),
+ *     delay: 800
+ *   })
+ *
+ *   return <div ref={elementRef}>Long press me</div>
+ * }
+ * ```
  */
 export function useLongPress<TElement extends HTMLElement = HTMLElement>({
   externalRef,

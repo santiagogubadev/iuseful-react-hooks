@@ -19,9 +19,29 @@ interface UseBooleanReturn {
 }
 
 /**
- * A custom hook that manages a boolean state.
- * @param [isActive=true] - Initial value for the boolean state. Defaults to false.
+ * A custom hook that manages a boolean state with convenient toggle and set functions.
+ *
+ * This hook provides a simple way to manage boolean states with built-in functions
+ * to toggle the value or set it to a specific boolean or computed value.
+ *
+ * @param initialValue - The initial boolean value for the state. Defaults to false.
  * @returns An object containing the current boolean value, a function to toggle the value, and a function to set the value.
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { value, toggle, set } = useBoolean(false)
+ *
+ *   return (
+ *     <div>
+ *       <p>Value: {value.toString()}</p>
+ *       <button onClick={toggle}>Toggle</button>
+ *       <button onClick={() => set(true)}>Set True</button>
+ *       <button onClick={() => set(prev => !prev)}>Toggle via function</button>
+ *     </div>
+ *   )
+ * }
+ * ```
  */
 export function useBoolean(initialValue: boolean = false): UseBooleanReturn {
   const [value, setValue] = useState<boolean>(initialValue)

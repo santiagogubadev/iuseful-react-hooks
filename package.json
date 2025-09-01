@@ -1,5 +1,5 @@
 {
-  "name": "useful-react-hooks",
+  "name": "useful-useful-react-hooks",
   "version": "0.0.0",
   "description": "'Use'-ful React hooks",
   "type": "module",
@@ -32,12 +32,11 @@
     "build": "npm run typecheck && tsup",
     "build:ci": "npm run typecheck && tsup",
     "typecheck": "tsc --noEmit",
-    "docs:generate": "typedoc && cp README-template.md README.md",
     "prepare": "husky || true"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Santyzz0311/react-hooks.git"
+    "url": "git+https://github.com/Santyzz0311/useful-react-hooks.git"
   },
   "keywords": [
     "react",
@@ -51,13 +50,13 @@
   "author": "Santiago Gutiérrez Barreneche <santydev0311@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Santyzz0311/react-hooks/issues"
+    "url": "https://github.com/Santyzz0311/useful-react-hooks/issues"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
-  "homepage": "https://github.com/Santyzz0311/react-hooks#readme",
+  "homepage": "https://github.com/Santyzz0311/useful-react-hooks#readme",
   "devDependencies": {
     "@stylistic/eslint-plugin": "~5.2.2",
     "@testing-library/dom": "~10.4.1",
@@ -67,15 +66,13 @@
     "eslint": "~9.32.0",
     "eslint-config-prettier": "~10.1.8",
     "eslint-plugin-prettier": "~5.5.4",
-    "eslint-plugin-react-hooks": "~5.2.0",
+    "eslint-plugin-useful-react-hooks": "~5.2.0",
     "happy-dom": "~18.0.1",
     "husky": "~9.1.7",
     "lint-staged": "~16.1.5",
     "neostandard": "~0.12.2",
     "prettier": "~3.6.2",
     "tsup": "~8.5.0",
-    "typedoc": "0.28.12",
-    "typedoc-plugin-markdown": "4.8.1",
     "typescript": "~5.9.2",
     "vitest": "~3.2.4"
   }

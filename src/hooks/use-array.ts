@@ -71,9 +71,60 @@ interface UseArrayReturn<T> {
 }
 
 /**
- * A custom hook that provides array manipulation methods.
- * @param initialValue The initial array value.
- * @returns An object containing the array and methods to manipulate it.
+ * A custom hook that provides comprehensive array state management with built-in manipulation methods.
+ *
+ * This hook offers a convenient way to manage array state with commonly needed operations
+ * like adding, removing, filtering, and sorting items. All operations return new arrays
+ * to maintain immutability and trigger React re-renders properly.
+ *
+ * @param initialValue - The initial array value to start with
+ * @returns An object containing the current array and methods to manipulate it
+ *
+ * @example
+ * ```tsx
+ * function TodoList() {
+ *   const {
+ *     array: todos,
+ *     push,
+ *     remove,
+ *     clear,
+ *     filter
+ *   } = useArray([
+ *     { id: 1, text: 'Learn React', done: false },
+ *     { id: 2, text: 'Build something awesome', done: false }
+ *   ])
+ *
+ *   const addTodo = () => {
+ *     push({
+ *       id: Date.now(),
+ *       text: 'New todo',
+ *       done: false
+ *     })
+ *   }
+ *
+ *   const removeTodo = (index) => {
+ *     remove(index)
+ *   }
+ *
+ *   const clearCompleted = () => {
+ *     filter(todo => !todo.done)
+ *   }
+ *
+ *   return (
+ *     <div>
+ *       <button onClick={addTodo}>Add Todo</button>
+ *       <button onClick={clear}>Clear All</button>
+ *       <button onClick={clearCompleted}>Clear Completed</button>
+ *       {todos.map((todo, index) => (
+ *         <div key={todo.id}>
+ *           <span>{todo.text}</span>
+ *           <button onClick={() => removeTodo(index)}>Remove</button>
+ *         </div>
+ *       ))}
+ *     </div>
+ *   )
+ * }
+ * ```
  */
 export function useArray<T>(initialValue: T[]): UseArrayReturn<T> {
   const [array, setArray] = useState<T[]>(initialValue)

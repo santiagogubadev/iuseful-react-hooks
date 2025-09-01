@@ -17,11 +17,32 @@ interface UseTimeoutReturn {
 }
 
 /**
- * A custom hook that sets a timeout and provides a way to clear it.
- * @param onTimeout - The callback function to be called when the timeout is reached.
+ * A custom hook that sets a timeout and provides controls to manage it.
+ *
+ * This hook allows you to schedule a callback function to run after a specified delay,
+ * with the ability to clear or reset the timeout at any time. The callback can be
+ * synchronous or return a Promise.
+ *
+ * @param onTimeout - The callback function to be called when the timeout is reached. Can return a Promise.
  * @param delayInMs - The delay in milliseconds before the timeout is triggered.
- * @param [optionsParams={}] - Additional options for the timeout behavior.
- * @returns An array containing a boolean indicating if the timeout was cleared and a function to clear the timeout.
+ * @returns An object with timeout control functions and state.
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const { isCleared, clear, reset } = useTimeout(() => {
+ *     console.log('Timeout reached!')
+ *   }, 3000)
+ *
+ *   return (
+ *     <div>
+ *       <p>Timeout cleared: {isCleared.toString()}</p>
+ *       <button onClick={clear}>Clear Timeout</button>
+ *       <button onClick={reset}>Reset Timeout</button>
+ *     </div>
+ *   )
+ * }
+ * ```
  */
 export function useTimeout(
   onTimeout: () => void | Promise<void>,
