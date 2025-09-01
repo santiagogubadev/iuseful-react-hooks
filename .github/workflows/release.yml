@@ -103,14 +103,17 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Create build artifacts zip
+        run: zip -r build-artifacts.zip ./dist
+
       - name: Upload build artifacts
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist
-          asset_name: build-artifacts
+          asset_path: ./build-artifacts.zip
+          asset_name: build-artifacts-v${{ steps.version.outputs.new_version }}.zip
           asset_content_type: application/zip
 
       - name: Notify success
@@ -118,3 +121,4 @@ jobs:
           echo "🎉 Successfully published v${{ steps.version.outputs.new_version }} to NPM!"
           echo "📦 Package: https://www.npmjs.com/package/iuseful-react-hooks"
           echo "🏷️ Release: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.version.outputs.new_version }}"
+          echo "📁 Build artifacts uploaded to GitHub Release"
