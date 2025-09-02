@@ -66,13 +66,25 @@ jobs:
           echo "old_version=$OLD_VERSION" >> $GITHUB_OUTPUT
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
+      - name: Generate Changelog
+        run: |
+          # Create a tag temporarily for changelog generation
+          git tag v${{ steps.version.outputs.new_version }}
+          
+          # Generate changelog and save release notes (npx will install changelogithub automatically)
+          npx changelogithub --output CHANGELOG.md
+          npx changelogithub --dry-run > .release-notes.md || echo "## What's Changed\n\nVersion v${{ steps.version.outputs.new_version }}\n\n- Merged PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}" > .release-notes.md
+          
+          # Remove the temporary tag
+          git tag -d v${{ steps.version.outputs.new_version }}
+
       - name: Configure Git and commit version bump
         env:
           HUSKY: 0
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json
+          git add package.json CHANGELOG.md
           git commit -m "chore: bump version to v${{ steps.version.outputs.new_version }}"
           git push
 
@@ -84,17 +96,7 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.new_version }}
           release_name: Release v${{ steps.version.outputs.new_version }}
-          body: |
-            ## Changes
-            
-            **Version**: v${{ steps.version.outputs.new_version }}
-            **Previous Version**: v${{ steps.version.outputs.old_version }}
-            **Type**: ${{ steps.version_bump.outputs.bump_type }}
-            
-            ### What's Changed
-            - Merged PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}
-            
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.version.outputs.old_version }}...v${{ steps.version.outputs.new_version }}
+          body_path: .release-notes.md
           draft: false
           prerelease: false
 
