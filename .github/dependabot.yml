@@ -1,28 +1,31 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  # GitHub Actions updates
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-    open-pull-requests-limit: 5
-    assignees:
-      - "santiagogubadev"
-    commit-message:
-      prefix: "chore"
-      prefix-development: "chore"
-      include: "scope"
+      interval: weekly
     labels:
-      - "skip-release"
       - "dependencies"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    assignees:
-      - "santiagogubadev"
-    labels:
       - "skip-release"
-      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  # npm dependencies updates  
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    labels:
+      - "dependencies"
+      - "skip-release"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    ignore:
+      # Ignore major version updates for peer dependencies
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"  
+        update-types: ["version-update:semver-major"]
