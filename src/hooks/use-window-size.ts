@@ -17,6 +17,9 @@ const INITIAL_STATE = {
   height: window.innerHeight,
 } satisfies WindowSize
 
+/**
+ * A custom hook that returns the current window size.
+ */
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState<WindowSize>(INITIAL_STATE)
 

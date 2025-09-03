@@ -19,11 +19,23 @@ describe('useStateWithHistory', async () => {
     expect(pointer2).toBe(0)
   })
 
+  it('should update state and maintain history when set value called with function as parameter', async () => {
+    const { result } = renderHook(() => useStateWithHistory(1))
+    const [, setValue] = result.current
+
+    await act(async () => setValue((prev) => prev + 1))
+    const [value, , { history, pointer }] = result.current
+
+    expect(value).toBe(2)
+    expect(history).toEqual([1, 2])
+    expect(pointer).toBe(1)
+  })
+
   it('should update state and maintain history when set value called', async () => {
     const { result } = renderHook(() => useStateWithHistory(1))
     const [, setValue] = result.current
 
-    await act(async () => await setValue(2))
+    await act(async () => setValue(2))
     const [value, , { history, pointer }] = result.current
 
     expect(value).toBe(2)
@@ -68,5 +80,17 @@ describe('useStateWithHistory', async () => {
     expect(value2).toBe(3)
     expect(history2).toEqual([1, 2, 3])
     expect(pointer2).toBe(2)
+  })
+
+  it('should shift the history when limit is passed', async () => {
+    const { result } = renderHook(() => useStateWithHistory(1, { historyLimit: 2 }))
+    const [, setValue] = result.current
+
+    await act(async () => setValue(2))
+    await act(async () => setValue(3))
+    const [, , { history, pointer }] = result.current
+    expect(history.length).toBe(2)
+    expect(history).toEqual([2, 3])
+    expect(pointer).toBe(1)
   })
 })

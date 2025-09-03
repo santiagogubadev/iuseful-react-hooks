@@ -6,6 +6,12 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: './coverage',
+      enabled: true,
+      include: ['src/**/*.{js,ts,jsx,tsx}'],
+    },
   },
   resolve: {
     alias: {
