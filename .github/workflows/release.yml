@@ -36,7 +36,12 @@ jobs:
         run: npm run lint:ci
 
       - name: Run tests
-        run: npm run test:ci
+        run: npm run test:ci:coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build package
         run: npm run build:ci
@@ -87,6 +92,11 @@ jobs:
           git add package.json CHANGELOG.md
           git commit -m "chore: bump version to v${{ steps.version.outputs.new_version }}"
           git push
+
+      - name: Create and push tag
+        run: |
+          git tag v${{ steps.version.outputs.new_version }}
+          git push origin v${{ steps.version.outputs.new_version }}
 
       - name: Create GitHub Release
         id: create_release
