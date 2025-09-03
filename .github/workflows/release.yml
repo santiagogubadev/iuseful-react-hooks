@@ -36,7 +36,12 @@ jobs:
         run: npm run lint:ci
 
       - name: Run tests
-        run: npm run test:ci
+        run: npm run test:ci:coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build package
         run: npm run build:ci
