@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { useBoolean } from './use-boolean'
 import { useEventListener } from './use-event-listener'
 
@@ -6,15 +6,17 @@ interface UseHoverBaseParams<TElement> {
   /**
    * A ref to the DOM element to detect if it is hovered.
    */
-  externalRef?: React.RefObject<TElement | null>
+  externalRef?: React.RefObject<TElement | null> | null
   /**
    * A callback function that is called when the element is hovered.
    * @param event The mouse event.
    */
   onHover?: (event: MouseEvent) => void
+  /**
+   * A callback function that is called when the element is unhovered.
+   */
+  onUnhover?: (event: MouseEvent) => void
 }
-
-type UseHoverBaseParamsWithBothParams<TElement> = Required<UseHoverBaseParams<TElement>>
 
 type UseHoverBaseParamsWithoutExternalRef<TElement> = UseHoverBaseParams<TElement> & {
   externalRef?: undefined
@@ -37,11 +39,14 @@ interface UseHoverReturnWithFromRef<TElement> extends UseHoverBaseReturn {
 export function useHover<TElement extends HTMLElement = HTMLElement>({
   onHover,
   externalRef,
-}: UseHoverBaseParamsWithBothParams<TElement>): UseHoverBaseReturn
+  onUnhover,
+}: UseHoverBaseParams<TElement>): typeof externalRef extends undefined
+  ? UseHoverBaseReturn
+  : UseHoverReturnWithFromRef<TElement>
 
 export function useHover<TElement extends HTMLElement = HTMLElement>({
   onHover,
-  externalRef,
+  onUnhover,
 }: UseHoverBaseParamsWithoutExternalRef<TElement>): UseHoverReturnWithFromRef<TElement>
 
 export function useHover<
@@ -56,17 +61,26 @@ export function useHover<
  * You can either provide your own ref or use the ref returned by the hook.
  * @param params - Configuration object for the hover detection
  * @param params.onHover - Callback function called when the element is hovered
+ * @param params.onUnhover - Callback function called when the element is unhovered
  * @param params.externalRef - Optional ref to an existing element. If not provided, the hook returns a ref to use
  */
 export function useHover<TElement extends HTMLElement = HTMLElement>({
   onHover,
   externalRef,
-}:
-  | UseHoverBaseParamsWithBothParams<TElement>
-  | UseHoverBaseParamsWithoutExternalRef<TElement>
-  | undefined = {}) {
+  onUnhover,
+}: UseHoverBaseParams<TElement> | UseHoverBaseParamsWithoutExternalRef<TElement> | undefined = {}) {
   const { value: isHovered, set: setIsHovered } = useBoolean()
   const fromRef = useRef<TElement>(null)
+
+  const getResolvedTarget = useCallback(() => {
+    if (externalRef === undefined) {
+      return fromRef.current
+    }
+
+    if (externalRef === null) return null
+
+    return externalRef.current === null ? null : externalRef.current
+  }, [externalRef])
 
   useEventListener(
     'mouseenter',
@@ -74,12 +88,15 @@ export function useHover<TElement extends HTMLElement = HTMLElement>({
       setIsHovered(true)
       onHover?.(event)
     },
-    (externalRef?.current ?? fromRef?.current) as HTMLElement,
+    getResolvedTarget() as HTMLElement,
   )
   useEventListener(
     'mouseout',
-    () => setIsHovered(false),
-    (externalRef?.current ?? fromRef?.current) as HTMLElement,
+    (event) => {
+      setIsHovered(false)
+      onUnhover?.(event)
+    },
+    getResolvedTarget() as HTMLElement,
   )
 
   if (externalRef === undefined)

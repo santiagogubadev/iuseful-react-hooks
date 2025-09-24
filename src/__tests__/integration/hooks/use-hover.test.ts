@@ -227,7 +227,8 @@ describe('useHover', () => {
 
   describe('edge cases', () => {
     it('should handle when externalRef.current is null', () => {
-      renderHook(() => useHover({ onHover, externalRef: { current: null } }))
+      const { result } = renderHook(() => useRef<HTMLElement>(null))
+      renderHook(() => useHover({ onHover, externalRef: result.current }))
 
       act(() => {
         fireEvent.mouseEnter(document.body)
