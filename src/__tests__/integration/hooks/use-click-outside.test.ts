@@ -66,7 +66,7 @@ describe('useClickOutSide', () => {
     it('should return void when externalRef is provided', () => {
       const { result: refResult } = renderHook(() => useRef<HTMLDivElement>(null))
       const { result } = renderHook(() =>
-        useClickOutSide({ onClickOutside, externalRef: refResult.current } as any),
+        useClickOutSide({ onClickOutside, externalRef: refResult.current }),
       )
 
       expect(result.current).toBeUndefined()
@@ -77,7 +77,7 @@ describe('useClickOutSide', () => {
       document.body.appendChild(div)
 
       const { result: refResult } = renderHook(() => useRef<HTMLDivElement>(div))
-      renderHook(() => useClickOutSide({ onClickOutside, externalRef: refResult.current } as any))
+      renderHook(() => useClickOutSide({ onClickOutside, externalRef: refResult.current }))
 
       fireEvent.click(document.body)
 
@@ -92,7 +92,7 @@ describe('useClickOutSide', () => {
       document.body.appendChild(div)
 
       const { result: refResult } = renderHook(() => useRef<HTMLDivElement>(div))
-      renderHook(() => useClickOutSide({ onClickOutside, externalRef: refResult.current } as any))
+      renderHook(() => useClickOutSide({ onClickOutside, externalRef: refResult.current }))
 
       fireEvent.click(div)
 
@@ -103,7 +103,7 @@ describe('useClickOutSide', () => {
 
     it('should not call onClickOutside when external element is null', () => {
       const { result: refResult } = renderHook(() => useRef<HTMLDivElement>(null))
-      renderHook(() => useClickOutSide({ onClickOutside, externalRef: refResult.current } as any))
+      renderHook(() => useClickOutSide({ onClickOutside, externalRef: refResult.current }))
 
       fireEvent.click(document.body)
 

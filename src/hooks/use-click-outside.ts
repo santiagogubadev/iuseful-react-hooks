@@ -1,30 +1,44 @@
 import { useRef } from 'react'
 import { useEventListener } from './use-event-listener'
 
-interface UseClickOutSideParams<TElement> {
-  /**
-   * A ref to the DOM element to detect outside clicks.
-   */
-  externalRef?: React.RefObject<TElement>
+interface UseClickOutSideBaseParams<TElement> {
   /**
    * A callback function that is called when a click outside the element is detected.
    * @param event The mouse event.
    */
-  onClickOutside: (event: MouseEvent) => void
+  onClickOutside?: (event: MouseEvent) => void
+  /**
+   * A ref to the DOM element to detect outside clicks.
+   */
+  externalRef?: React.RefObject<TElement | null>
 }
 
-type UseClickOutSideReturn<TElement, HasExternalRef extends boolean> = HasExternalRef extends true
-  ? void
-  : {
-      /**
-       * A ref to the DOM element to measure.
-       */
-      fromRef: React.RefObject<TElement | null>
-    }
+type UseClickOutSideParamsWithBothParams<TElement> = Required<UseClickOutSideBaseParams<TElement>>
 
-export function useClickOutSide<TElement extends Element = Element>(
-  params: Pick<UseClickOutSideParams<TElement>, 'onClickOutside'>,
-): UseClickOutSideReturn<TElement, false>
+type UseClickOutSideParamsWithoutExternalRef<TElement> = UseClickOutSideBaseParams<TElement> & {
+  externalRef?: undefined
+}
+
+interface UseClickOutSideReturn<TElement> {
+  /**
+   * A ref to the DOM element to measure.
+   */
+  fromRef: React.RefObject<TElement | null>
+}
+
+export function useClickOutSide<TElement extends HTMLElement = HTMLElement>({
+  onClickOutside,
+  externalRef,
+}: UseClickOutSideParamsWithBothParams<TElement>): void
+
+export function useClickOutSide<TElement extends HTMLElement = HTMLElement>({
+  onClickOutside,
+  externalRef,
+}: UseClickOutSideParamsWithoutExternalRef<TElement>): UseClickOutSideReturn<TElement>
+
+export function useClickOutSide<
+  TElement extends HTMLElement = HTMLElement,
+>(): UseClickOutSideReturn<TElement>
 
 /**
  * A hook that detects clicks outside of a specified element.
@@ -73,10 +87,13 @@ export function useClickOutSide<TElement extends Element = Element>(
  * }
  * ```
  */
-export function useClickOutSide<TElement extends Element = Element>({
+export function useClickOutSide<TElement extends HTMLElement = HTMLElement>({
   onClickOutside,
   externalRef,
-}: UseClickOutSideParams<TElement>) {
+}:
+  | UseClickOutSideParamsWithBothParams<TElement>
+  | UseClickOutSideParamsWithoutExternalRef<TElement>
+  | undefined = {}) {
   const fromRef = useRef<TElement>(null)
 
   useEventListener(
@@ -84,11 +101,12 @@ export function useClickOutSide<TElement extends Element = Element>({
     (e) => {
       const element = externalRef?.current ?? fromRef.current
       if (element == null || element.contains(e.target as Node)) return
-      onClickOutside(e)
+      onClickOutside?.(e)
     },
     document,
   )
 
-  // casting for documentation
-  if (externalRef == null) return { fromRef } as UseClickOutSideReturn<TElement, false>
+  if (externalRef !== undefined) return
+
+  return { fromRef }
 }
