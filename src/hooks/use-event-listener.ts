@@ -64,8 +64,6 @@ export function useEventListener<
   }, [listener])
 
   useEffect(() => {
-    if (!target) return
-
     const handler: EventListener = (event: Event) => {
       const currentListener = listenerRef.current
 
@@ -80,7 +78,7 @@ export function useEventListener<
       }
     }
 
-    target.addEventListener(type as string, handler, options)
-    return () => target.removeEventListener(type as string, handler, options)
+    target?.addEventListener(type as string, handler, options)
+    return () => target?.removeEventListener(type as string, handler, options)
   }, [type, target, options])
 }
