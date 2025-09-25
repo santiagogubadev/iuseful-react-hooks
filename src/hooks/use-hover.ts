@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useRef } from 'react'
 import { useBoolean } from './use-boolean'
 import { useEventListener } from './use-event-listener'
 
@@ -72,15 +72,7 @@ export function useHover<TElement extends HTMLElement = HTMLElement>({
   const { value: isHovered, set: setIsHovered } = useBoolean()
   const fromRef = useRef<TElement>(null)
 
-  const getResolvedTarget = useCallback(() => {
-    if (externalRef === undefined) {
-      return fromRef.current
-    }
-
-    if (externalRef === null) return null
-
-    return externalRef.current === null ? null : externalRef.current
-  }, [externalRef])
+  const target = externalRef ? externalRef.current : fromRef.current
 
   useEventListener(
     'mouseenter',
@@ -88,7 +80,7 @@ export function useHover<TElement extends HTMLElement = HTMLElement>({
       setIsHovered(true)
       onHover?.(event)
     },
-    getResolvedTarget() as HTMLElement,
+    target as HTMLElement,
   )
   useEventListener(
     'mouseout',
@@ -96,7 +88,7 @@ export function useHover<TElement extends HTMLElement = HTMLElement>({
       setIsHovered(false)
       onUnhover?.(event)
     },
-    getResolvedTarget() as HTMLElement,
+    target as HTMLElement,
   )
 
   if (externalRef === undefined)
