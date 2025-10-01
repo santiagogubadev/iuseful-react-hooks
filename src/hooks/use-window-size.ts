@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useEventListener } from './use-event-listener'
+import { isClient } from '@/utils/helpers/is-client'
 
 export interface WindowSize {
   /**
@@ -13,8 +14,8 @@ export interface WindowSize {
 }
 
 const INITIAL_STATE = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: isClient ? window.innerWidth : 0,
+  height: isClient ? window.innerHeight : 0,
 } satisfies WindowSize
 
 /**
@@ -24,10 +25,12 @@ export function useWindowSize() {
   const [windowSize, setWindowSize] = useState<WindowSize>(INITIAL_STATE)
 
   useEventListener('resize', () => {
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    })
+    if (isClient) {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
   })
 
   return windowSize

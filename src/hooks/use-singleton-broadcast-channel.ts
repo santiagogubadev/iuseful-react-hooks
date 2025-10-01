@@ -12,7 +12,7 @@ export interface UseSingletonBroadcastChannelReturn {
   /**
    * The BroadcastChannel instance.
    */
-  channel: BroadcastChannel
+  channel: BroadcastChannel | null
 }
 
 export function useSingletonBroadcastChannel({

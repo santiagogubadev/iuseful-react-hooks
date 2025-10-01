@@ -28,7 +28,9 @@ export function useBroadcastChannelSender<T>({
 
   const send = useCallback(
     (message: T) => {
-      channel.postMessage(message)
+      if (channel) {
+        channel.postMessage(message)
+      }
     },
     [channel],
   )

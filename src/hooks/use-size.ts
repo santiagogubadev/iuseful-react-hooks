@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { isClient } from '@/utils/helpers/is-client'
 
 type UseSizeReturn<TElement, HasExternalRef extends boolean> = HasExternalRef extends true
   ? {
@@ -35,6 +36,8 @@ export function useSize<TElement extends Element = Element>(
   const [size, setSize] = useState<DOMRectReadOnly>({} as DOMRectReadOnly)
 
   useEffect(() => {
+    if (!isClient || typeof ResizeObserver === 'undefined') return
+
     const element = externalRef?.current ?? fromRef.current
     if (!element) return
 

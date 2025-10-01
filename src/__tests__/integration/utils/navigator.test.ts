@@ -8,4 +8,20 @@ describe('copyToClipboard', () => {
     await copyToClipboard(text)
     expect(writeTextSpy).toHaveBeenCalledWith(text)
   })
+
+  it('should reject when navigator.clipboard is not available', async () => {
+    vi.stubGlobal('navigator', {
+      ...navigator,
+      clipboard: undefined,
+    })
+
+    await expect(copyToClipboard('test')).rejects.toThrow('Clipboard API not available')
+
+    // Restore navigator for other tests
+    vi.unstubAllGlobals()
+    vi.stubGlobal('navigator', {
+      ...navigator,
+      clipboard: { writeText: writeTextSpy },
+    })
+  })
 })

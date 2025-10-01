@@ -49,4 +49,51 @@ describe('useGeolocation', () => {
       options,
     )
   })
+
+  it('should handle successful geolocation response', () => {
+    const mockPosition: GeolocationPosition = {
+      coords: {
+        latitude: 40.7128,
+        longitude: -74.006,
+        accuracy: 10,
+        altitude: null,
+        altitudeAccuracy: null,
+        heading: null,
+        speed: null,
+        toJSON: () => ({}),
+      },
+      timestamp: Date.now(),
+      toJSON: () => ({}),
+    }
+
+    mockGeolocation.getCurrentPosition.mockImplementation((success) => {
+      success(mockPosition)
+    })
+
+    const { result } = renderHook(() => useGeolocation())
+
+    expect(result.current.loading).toBe(false)
+    expect(result.current.error).toBe(null)
+    expect(result.current.data).toEqual(mockPosition.coords)
+  })
+
+  it('should handle geolocation error', () => {
+    const mockError: GeolocationPositionError = {
+      code: 1,
+      message: 'Permission denied',
+      PERMISSION_DENIED: 1,
+      POSITION_UNAVAILABLE: 2,
+      TIMEOUT: 3,
+    }
+
+    mockGeolocation.getCurrentPosition.mockImplementation((_, error) => {
+      error(mockError)
+    })
+
+    const { result } = renderHook(() => useGeolocation())
+
+    expect(result.current.loading).toBe(false)
+    expect(result.current.error).toEqual(mockError)
+    expect(result.current.data).toBe(null)
+  })
 })

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { isClient } from '@/utils/helpers/is-client'
 
 interface UseGeolocationReturn {
   /**
@@ -26,6 +27,11 @@ export function useGeolocation(options?: PositionOptions): UseGeolocationReturn 
   const [data, setData] = useState<GeolocationCoordinates | null>(null)
 
   useEffect(() => {
+    if (!isClient) {
+      setLoading(false)
+      return
+    }
+
     const successHandler = (position: GeolocationPosition) => {
       setLoading(false)
       setError(null)

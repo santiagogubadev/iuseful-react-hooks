@@ -3,6 +3,11 @@ import { assertFunction } from '@/__tests__/__tests-utils__/assertions'
 
 vi.stubGlobal('BroadcastChannel', BroadcastChannelMock)
 
+// Mock isClient to be true for testing
+vi.mock('@/utils/helpers/is-client', () => ({
+  isClient: true,
+}))
+
 describe('acquireChannel / releaseChannel', async () => {
   beforeEach(() => {
     vi.resetModules()
@@ -16,7 +21,7 @@ describe('acquireChannel / releaseChannel', async () => {
     const { acquireChannel } = await import('@/utils/helpers/broadcast-channels')
     const channel = acquireChannel('test-channel')
     expect(channel).toBeInstanceOf(BroadcastChannelMock)
-    expect(channel.close).not.toHaveBeenCalled()
+    expect(channel?.close).not.toHaveBeenCalled()
   })
 
   it('acquireChannel should return existing channel if it already exists', async () => {
@@ -30,7 +35,7 @@ describe('acquireChannel / releaseChannel', async () => {
     const { acquireChannel, releaseChannel } = await import('@/utils/helpers/broadcast-channels')
     const channel = acquireChannel('test-channel')
     releaseChannel('test-channel', channel)
-    expect(channel.close).toHaveBeenCalledTimes(1)
+    expect(channel?.close).toHaveBeenCalledTimes(1)
   })
 
   it('releaseChannel should not close channel if count is still greater than zero', async () => {
@@ -38,6 +43,6 @@ describe('acquireChannel / releaseChannel', async () => {
     const channel = acquireChannel('test-channel')
     releaseChannel('test-channel', channel)
     releaseChannel('test-channel', channel)
-    expect(channel.close).toHaveBeenCalledTimes(1)
+    expect(channel?.close).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,4 +1,5 @@
 import { useAsync } from './use-async'
+import { isClient } from '@/utils/helpers/is-client'
 
 /**
  * A custom hook for loading external scripts.
@@ -6,6 +7,10 @@ import { useAsync } from './use-async'
  */
 export function useScript(url: string) {
   return useAsync(() => {
+    if (!isClient) {
+      return Promise.resolve()
+    }
+
     const existing = document.querySelector(`script[src="${url}"]`)
     if (existing) return Promise.resolve()
 

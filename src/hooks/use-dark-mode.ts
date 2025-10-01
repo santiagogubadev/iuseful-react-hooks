@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useMediaQuery } from './use-media-query'
 import { useLocalStorage } from './use-storage'
+import { isClient } from '@/utils/helpers/is-client'
 
 /**
  * A custom hook that manages dark mode state.
@@ -12,7 +13,9 @@ export function useDarkMode(darkModeKey: string = 'dark') {
   const enabled = darkMode ?? prefersDarkmode
 
   useEffect(() => {
-    document.body.classList.toggle(darkModeKey, enabled)
+    if (isClient) {
+      document.body.classList.toggle(darkModeKey, enabled)
+    }
   }, [enabled, darkModeKey])
 
   return [enabled, setDarkMode]

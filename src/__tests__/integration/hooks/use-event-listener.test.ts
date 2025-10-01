@@ -21,4 +21,17 @@ describe('useEventListener', () => {
     expect(addEventListenerSpy).toHaveBeenCalledTimes(1)
     expect(addEventListenerSpy).toHaveBeenCalledWith('click', expect.any(Function), undefined)
   })
+
+  it('should handle EventListener object with handleEvent method', () => {
+    const handleEvent = vi.fn()
+    const eventListener = { handleEvent }
+    const target = document.createElement('div')
+
+    renderHook(() => useEventListener('click', eventListener, target))
+
+    // Trigger the event
+    target.click()
+
+    expect(handleEvent).toHaveBeenCalled()
+  })
 })
