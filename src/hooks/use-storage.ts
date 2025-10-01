@@ -1,5 +1,6 @@
 import { DefaultValue } from '@/utils/types/react'
 import { useCallback, useState, useEffect } from 'react'
+import { isClient } from '@/utils/helpers/is-client'
 
 type StorageValue<T> = T | undefined
 
@@ -28,7 +29,7 @@ export function useLocalStorage<T = unknown>(
   key: string,
   defaultValue?: DefaultValue<T>,
 ): UseStorageReturn<T> {
-  return useStorage(key, defaultValue, window.localStorage)
+  return useStorage(key, defaultValue, isClient ? window.localStorage : null)
 }
 
 /**
@@ -41,7 +42,7 @@ export function useSessionStorage<T = unknown>(
   key: string,
   defaultValue?: DefaultValue<T>,
 ): UseStorageReturn<T> {
-  return useStorage(key, defaultValue, window.sessionStorage)
+  return useStorage(key, defaultValue, isClient ? window.sessionStorage : null)
 }
 
 /**
@@ -50,9 +51,13 @@ export function useSessionStorage<T = unknown>(
 function useStorage<T>(
   key: string,
   defaultValue: DefaultValue<T> | undefined,
-  storageObject: Storage,
+  storageObject: Storage | null,
 ): UseStorageReturn<T> {
   const [value, setValue] = useState<StorageValue<T>>(() => {
+    if (!storageObject) {
+      return typeof defaultValue === 'function' ? (defaultValue as () => T)() : defaultValue
+    }
+
     const jsonValue = storageObject.getItem(key)
     if (jsonValue != null) return JSON.parse(jsonValue) as T
 
@@ -60,6 +65,8 @@ function useStorage<T>(
   })
 
   useEffect(() => {
+    if (!storageObject) return
+
     if (value === undefined) return storageObject.removeItem(key)
 
     storageObject.setItem(key, JSON.stringify(value))

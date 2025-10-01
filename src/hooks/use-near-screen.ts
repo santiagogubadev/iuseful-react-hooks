@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { isClient } from '@/utils/helpers/is-client'
 
 export interface UseNearScreenParams<T> {
   /**
@@ -44,6 +45,8 @@ export function useNearScreen<TElement extends HTMLElement | null>({
   const fromRef = useRef<TElement | null>(null)
 
   useEffect(() => {
+    if (!isClient || typeof IntersectionObserver === 'undefined') return
+
     const element = externalRef ? externalRef.current : fromRef.current
 
     const onChange = (
@@ -69,7 +72,7 @@ export function useNearScreen<TElement extends HTMLElement | null>({
         observer.disconnect()
       }
     }
-  }, [externalRef, once])
+  }, [externalRef, once, rootMargin])
 
   return { isNearScreen, fromRef }
 }

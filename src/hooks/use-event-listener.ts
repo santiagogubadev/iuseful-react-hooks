@@ -1,3 +1,4 @@
+import { isClient } from '@/utils/helpers/is-client'
 import { useEffect, useRef } from 'react'
 
 // Helper type to get valid event keys for a target
@@ -36,7 +37,9 @@ type EventForTargetAndKey<T, K> = T extends Window
             : Event
           : Event
 
-// Helper type for the listener based on target and event key
+/**
+ * Helper type for the listener based on target and event key
+ */
 type ListenerForTargetAndKey<T, K> =
   | ((this: T, ev: EventForTargetAndKey<T, K>) => any)
   | { handleEvent(ev: EventForTargetAndKey<T, K>): any }
@@ -54,7 +57,7 @@ export function useEventListener<
 >(
   type: K,
   listener: ListenerForTargetAndKey<T, K>,
-  target: T = window as unknown as T,
+  target?: T | null,
   options?: boolean | AddEventListenerOptions,
 ): void {
   const listenerRef = useRef(listener)
@@ -64,11 +67,15 @@ export function useEventListener<
   }, [listener])
 
   useEffect(() => {
+    const resolvedTarget = (target ?? (isClient ? window : null)) as T | null
+
+    if (!resolvedTarget) return
+
     const handler: EventListener = (event: Event) => {
       const currentListener = listenerRef.current
 
       if (typeof currentListener === 'function') {
-        currentListener.call(target, event as EventForTargetAndKey<T, K>)
+        currentListener.call(resolvedTarget, event as EventForTargetAndKey<T, K>)
       } else if (
         currentListener &&
         typeof currentListener === 'object' &&
@@ -78,7 +85,9 @@ export function useEventListener<
       }
     }
 
-    target?.addEventListener(type as string, handler, options)
-    return () => target?.removeEventListener(type as string, handler, options)
+    resolvedTarget?.addEventListener(type as string, handler, options)
+    return () => {
+      resolvedTarget?.removeEventListener(type as string, handler, options)
+    }
   }, [type, target, options])
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useEventListener } from './use-event-listener'
+import { isClient } from '@/utils/helpers/is-client'
 
 /**
  * A custom hook that listens for changes to a media query.
@@ -11,9 +12,11 @@ export function useMediaQuery(query: string) {
   const [mediaQueryList, setMediaQueryList] = useState<MediaQueryList | null>(null)
 
   useEffect(() => {
-    const mql = window.matchMedia(query)
-    setMediaQueryList(mql)
-    setIsMatch(mql.matches)
+    if (isClient) {
+      const mql = window.matchMedia(query)
+      setMediaQueryList(mql)
+      setIsMatch(mql.matches)
+    }
   }, [query])
 
   useEventListener('change', (e) => setIsMatch(e.matches), mediaQueryList as MediaQueryList)
