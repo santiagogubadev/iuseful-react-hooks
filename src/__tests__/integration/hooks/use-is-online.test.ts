@@ -20,4 +20,24 @@ describe('useIsOnline', () => {
     const { result } = renderHook(() => useIsOnline())
     expect(result.current).toBe(false)
   })
+
+  it('should update state when navigator.onLine changes', async () => {
+    vi.stubGlobal('navigator', {
+      onLine: true,
+    })
+
+    const { result, rerender } = renderHook(() => useIsOnline())
+    expect(result.current).toBe(true)
+
+    // Simulate status change
+    vi.stubGlobal('navigator', {
+      onLine: false,
+    })
+    window.dispatchEvent(new Event('offline'))
+
+    // Rerender to trigger the hook update
+    rerender()
+
+    expect(result.current).toBe(false)
+  })
 })
