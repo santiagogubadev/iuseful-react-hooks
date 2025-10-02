@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useEventListener } from './use-event-listener'
+import { isClient } from '@/utils/helpers/is-client'
 
 interface UseClickOutSideBaseParams<TElement> {
   /**
@@ -103,7 +104,7 @@ export function useClickOutSide<TElement extends HTMLElement = HTMLElement>({
       if (element == null || element.contains(e.target as Node)) return
       onClickOutside?.(e)
     },
-    document,
+    isClient ? document : undefined,
   )
 
   if (externalRef !== undefined) return
