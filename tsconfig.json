@@ -9,9 +9,8 @@
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"],
+      "@/*": ["./src/*"],
     },
     "types": ["vitest/globals"],
   },

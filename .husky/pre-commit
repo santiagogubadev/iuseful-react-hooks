@@ -7,10 +7,10 @@ export NVM_DIR="$HOME/.nvm"
 nvm use default --silent
 
 echo "🔧 linting..."
-npm run lint-staged:husky
+pnpm run lint-staged:husky
 
 echo "📦 build..."
-npm run build
+pnpm run build
 
 echo "🧪 fast tests..."
-npm run test:husky
+pnpm run test:husky
