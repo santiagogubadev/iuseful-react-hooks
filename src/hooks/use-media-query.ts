@@ -8,7 +8,9 @@ import { isClient } from '@/utils/helpers/is-client'
  * @returns A boolean indicating whether the media query matches the current viewport.
  */
 export function useMediaQuery(query: string) {
-  const [isMatch, setIsMatch] = useState<boolean>(false)
+  const [isMatch, setIsMatch] = useState<boolean>(() =>
+    isClient ? window.matchMedia(query).matches : false,
+  )
   const [mediaQueryList, setMediaQueryList] = useState<MediaQueryList | null>(null)
 
   useEffect(() => {
